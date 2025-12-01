@@ -1,0 +1,4 @@
+Error: Failed to decrypt keystore "/Users/juan/.foundry/keystores/eusd-deployer-new"
+
+Context:
+- Mac Mismatch

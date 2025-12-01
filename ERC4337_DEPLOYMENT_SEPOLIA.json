@@ -1,0 +1,20 @@
+{
+  "network": "Base Sepolia Testnet",
+  "chainId": 84532,
+  "deployedAt": "2024-11-25",
+  "deployer": "0x685F3040003E20Bf09488C8B9354913a00627f7a",
+  "contracts": {
+    "AccountFactory": "0xb74C03C802Cc467B4de591e9bD084f401EF99e6E",
+    "Paymaster": "0x40C98fe23EE16A16D9AA9a7919d31Ff6e25C0943",
+    "EntryPoint": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+    "NOVISToken": "0x6AF5e612Fd96Abf58086d30A12b5d46Faa3581a6"
+  },
+  "transactions": {
+    "paymaster": "0xd5d595433be5744792a790e4b3942c1993e3a21ff7663da1016d8cb6a3d24fb5",
+    "factory": "0x63529fecb3dde76d4ad64ee31585ae9e7f27153ec9ac5905ff2712611803def1"
+  },
+  "cost": {
+    "totalETH": "0.0000030936264",
+    "gasUsed": 2578022
+  }
+}
