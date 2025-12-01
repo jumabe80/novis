@@ -1,0 +1,39 @@
+{
+  "name": "novis-sdk",
+  "version": "1.0.0",
+  "description": "NOVIS SDK - Gasless stablecoin transactions for humans and AI agents on Base",
+  "main": "novis-sdk.js",
+  "type": "module",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/novis-protocol/novis-sdk.git"
+  },
+  "keywords": [
+    "novis",
+    "stablecoin",
+    "gasless",
+    "erc4337",
+    "meta-transactions",
+    "ai-agents",
+    "base",
+    "ethereum",
+    "web3",
+    "defi"
+  ],
+  "author": "NOVIS Protocol",
+  "license": "MIT",
+  "dependencies": {
+    "ethers": "^6.9.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "novis-sdk.js",
+    "README.md"
+  ]
+}
