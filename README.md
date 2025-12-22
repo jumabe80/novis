@@ -1,164 +1,110 @@
-# NOVIS - AI-Native Stablecoin
+# NOVIS - Gasless Stablecoin for AI Agents
 
-> The first stablecoin designed specifically for AI agents. Gasless transactions for everyone - humans and AI alike.
+> The first stablecoin designed specifically for AI agent payments. Gasless transactions, escrow, and batch payments — no ETH required.
 
 [![Base](https://img.shields.io/badge/Network-Base-0052FF)](https://base.org)
-[![ERC-4337](https://img.shields.io/badge/ERC--4337-Compatible-green)](https://eips.ethereum.org/EIPS/eip-4337)
+[![DefiLlama](https://img.shields.io/badge/Listed-DefiLlama-green)](https://defillama.com/protocol/novis)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
 
 ## 🚀 What is NOVIS?
 
-NOVIS (NVS) is a **gasless, overcollateralized stablecoin** built on Base. Users and AI agents can transfer NOVIS without needing ETH for gas - they just sign, and our relayer handles the rest.
+NOVIS (NVS) is a **gasless, USDC-backed stablecoin** on Base designed for AI agent commerce. Agents can send payments, create escrows, and execute batch transfers without needing ETH for gas.
 
 ### Key Features
 
 | Feature | Description |
 |---------|-------------|
-| **🔥 Gasless for Everyone** | Humans and AI agents transfer without ETH |
-| **💰 1:1 USDC Backing** | Fully collateralized, always redeemable |
-| **📈 Auto Buy & Burn** | Yield generates deflationary pressure |
-| **🤖 AI-Native** | Smart Accounts with spending limits |
-| **🔒 Upgradeable** | UUPS proxy pattern for future improvements |
-| **⚡ Low Fees** | FREE under 10 NOVIS, 0.1% above |
+| **🔥 Gasless Transfers** | Sign and send — no ETH needed |
+| **💰 1:1 USDC Backed** | 126%+ collateralized via Compound V3 |
+| **📝 Payment Memos** | Attach references to payments (task IDs, invoices) |
+| **🔒 Escrow** | Lock funds until task completion |
+| **📦 Batch Payments** | Pay multiple recipients in one transaction |
+| **🤖 Smart Accounts** | AI agent wallets with spending limits |
 
 ---
 
-## 📊 How It Works
+## 📍 Contract Addresses (Base Mainnet)
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    USER EXPERIENCE                          │
-│                    (Frictionless)                           │
-│                                                             │
-│   User/AI signs transfer                                    │
-│         │                                                   │
-│         ▼                                                   │
-│   Relayer submits tx (pays gas)                            │
-│         │                                                   │
-│         ▼                                                   │
-│   Recipient gets NOVIS (minus 0.1% fee if ≥10)             │
-│                                                             │
-│   User thinks: "Wow, no gas needed!"                       │
-└─────────────────────────────────────────────────────────────┘
-```
+| Contract | Address | Description |
+|----------|---------|-------------|
+| **NOVIS Token** | `0x1fb5e1C0c3DEc8da595E531b31C7B30c540E6B85` | ERC-20 with gasless support |
+| **Vault** | `0xA3D771bF986174D9cf9C85072cCD11cb72A694d4` | Mint/redeem, USDC backing |
+| **PaymentRouter** | `0xc95D114A333d0394e562BD398c4787fd22d27110` | Escrow, memos, batch payments |
+| **Genesis** | `0xa23a81b1F7fB96DF6d12a579c2660b1ffbAAB2b7` | Early adopter yield program |
+| **Smart Accounts** | `0x4b84E3a0D640c9139426f55204Fb34dB9B1123EA` | AI agent account factory |
+| **Treasury (SAFE)** | `0x4709280aef7A496EA84e72dB3CAbAd5e324d593e` | Protocol multisig |
 
-### The Economics
+### DEX Liquidity
 
-| Transaction | Fee Collected | Gas Cost (approx) | Net Revenue |
-|-------------|---------------|-------------------|-------------|
-| Send 100 NOVIS | 0.1 NOVIS (~$0.10) | ~$0.001 on Base | +$0.099 |
-| Send 1000 NOVIS | 1 NOVIS (~$1.00) | ~$0.001 on Base | +$0.999 |
-| Send 5 NOVIS | FREE | ~$0.001 on Base | Subsidized |
-
----
-
-## 💸 Fee Structure
-
-| Transfer Amount | Fee | Example |
-|-----------------|-----|---------|
-| < 10 NOVIS | **FREE** | Send 5 NOVIS → Receive 5 NOVIS |
-| ≥ 10 NOVIS | **0.1%** | Send 100 NOVIS → Receive 99.9 NOVIS |
-
-*Fees are configurable and fund gas sponsorship + protocol development.*
-
----
-
-## 🏗️ Architecture
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│                         USERS                                │
-│              (Humans via MetaMask, AI Agents)                │
-└──────────────────────────────────────────────────────────────┘
-                              │
-              ┌───────────────┴───────────────┐
-              │                               │
-              ▼                               ▼
-┌─────────────────────────┐     ┌─────────────────────────────┐
-│     META-TRANSFER       │     │      SMART ACCOUNTS         │
-│   (Regular Wallets)     │     │     (AI Agents/ERC-4337)    │
-│                         │     │                             │
-│  Sign EIP-712 message   │     │  UserOperation via Pimlico  │
-│  → Relayer executes     │     │  → Bundler executes         │
-└───────────┬─────────────┘     └──────────────┬──────────────┘
-            │                                   │
-            └───────────────┬───────────────────┘
-                            │
-                            ▼
-┌──────────────────────────────────────────────────────────────┐
-│                      NOVIS TOKEN                             │
-│                   (Upgradeable ERC-20)                       │
-│                                                              │
-│  • Transfer fees (0.1% ≥ 10 NOVIS)                          │
-│  • Meta-transaction support (gasless)                        │
-│  • EIP-2612 Permit (gasless approvals)                      │
-└──────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌──────────────────────────────────────────────────────────────┐
-│                        VAULT                                 │
-│                                                              │
-│  • Deposit USDC → Mint NOVIS (1:1)                          │
-│  • Redeem NOVIS → Get USDC (1:1)                            │
-│  • Auto Buy & Burn from yield                               │
-│  • Auto-deallocate from strategy on redeem                  │
-└──────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌──────────────────────────────────────────────────────────────┐
-│                   YIELD STRATEGY                             │
-│                   (Compound V3)                              │
-│                                                              │
-│  • USDC earns ~5% APY                                       │
-│  • Yield funds Buy & Burn                                   │
-│  • Deflationary token supply over time                      │
-└──────────────────────────────────────────────────────────────┘
-```
+| Pool | Type | Address |
+|------|------|---------|
+| **Aerodrome sAMM** | Stable (0.05% fee) | [NOVIS/USDC](https://aerodrome.finance/pools) |
 
 ---
 
 ## 🔧 Quick Start
 
-### Option 1: Gasless Transfer (Recommended)
-
-No ETH needed - just sign and send!
-
-```javascript
-import { NOVISClient } from './novis-sdk.js';
-
-const novis = new NOVISClient(process.env.PRIVATE_KEY);
-
-// Send gasless transfer
-const result = await novis.transfer(
-  '0xRecipientAddress...',
-  '10.0'  // 10 NOVIS
-);
-
-console.log('Success:', result.txHash);
-// User paid 0 ETH for gas
-// 0.01 NOVIS fee deducted (0.1% of 10)
+### Install SDK
+```bash
+npm install @novis/sdk
+# or
+pip install novis-sdk
 ```
 
-### Option 2: Smart Account (For AI Agents)
+### Send Gasless Payment
 
-Create a smart account with spending limits:
-
+**JavaScript:**
 ```javascript
-import { NOVISClient } from './novis-sdk.js';
+import { NOVISClient } from '@novis/sdk';
 
-const novis = new NOVISClient(process.env.PRIVATE_KEY);
+const client = new NOVISClient({ privateKey: process.env.PRIVATE_KEY });
 
-// Create smart account with 100 NOVIS/day limit
-const accountAddress = await novis.createSmartAccount('100');
+// Simple transfer (gasless)
+await client.transfer('0xRecipient...', '100'); // 100 NOVIS
 
-console.log('Smart Account:', accountAddress);
+// Payment with memo
+await client.payWithMemo('0xRecipient...', '50', 'task:summarize_doc_123');
+```
 
-// Fund it
-await novis.fundSmartAccount(accountAddress, '50');
+**Python:**
+```python
+from novis import NOVISClient
 
-// Now AI agent can transact via Pimlico (gasless)
+client = NOVISClient(private_key=os.environ['PRIVATE_KEY'])
+
+# Simple transfer (gasless)
+client.transfer('0xRecipient...', 100)
+
+# Payment with memo
+client.pay_with_memo('0xRecipient...', 50, 'task:summarize_doc_123')
+```
+
+### Create Escrow (For Agent Tasks)
+```javascript
+// Create escrow — funds locked until release
+const escrowId = await client.createEscrow({
+  to: '0xAgentB...',
+  amount: '100',
+  timeout: 3600  // 1 hour
+});
+
+// After task completion — release funds
+await client.releaseEscrow(escrowId);
+
+// Or cancel/refund if needed
+await client.refundEscrow(escrowId);
+```
+
+### Batch Payments
+```javascript
+// Pay multiple agents in one transaction
+await client.batchPay([
+  { to: '0xAgentA...', amount: '10', memo: 'task:research' },
+  { to: '0xAgentB...', amount: '25', memo: 'task:writing' },
+  { to: '0xAgentC...', amount: '15', memo: 'task:review' }
+]);
 ```
 
 ---
@@ -167,88 +113,77 @@ await novis.fundSmartAccount(accountAddress, '50');
 
 | Document | Description |
 |----------|-------------|
-| [Contract Addresses](./CONTRACTS.md) | All deployed contracts on Base |
-| [Integration Guide](./INTEGRATION.md) | Step-by-step setup for developers |
-| [API Reference](./API.md) | Relayer API documentation |
-| [JavaScript SDK](./sdk/javascript/) | Full JS/TS SDK |
-| [Python SDK](./sdk/python/) | Full Python SDK |
-| [Examples](./examples/) | Ready-to-run code samples |
+| [Quick Start](docs/quickstart.md) | Get started in 5 minutes |
+| [JavaScript SDK](sdk/javascript/) | Full JS/TS documentation |
+| [Python SDK](sdk/python/) | Full Python documentation |
+| [Contract ABIs](contracts/abis/) | All contract interfaces |
+| [Examples](examples/) | Working code samples |
 
 ---
 
-## 📍 Contract Addresses (Base Mainnet)
-
-| Contract | Address | Purpose |
-|----------|---------|---------|
-| **NOVIS Token** | `0x1fb5e1C0c3DEc8da595E531b31C7B30c540E6B85` | ERC-20 token with gasless support |
-| **Vault** | `0xA3D771bF986174D9cf9C85072cCD11cb72A694d4` | Deposit/redeem, buy & burn |
-| **Strategy** | `0x064E4586b7C63777BDC98A4776D3f78A93C0B752` | Compound V3 yield |
-| **Smart Account Factory** | `0x4b84E3a0D640c9139426f55204Fb34dB9B1123EA` | Creates AI agent accounts |
-| **DEX Pool** | `0xA0af1C990433102EFb08D78E060Ab05E6874ca69` | Aerodrome NOVIS/USDC |
-| **Treasury/SAFE** | `0x4709280aef7A496EA84e72dB3CAbAd5e324d593e` | Protocol owner |
-| **Relayer API** | `https://novis-relayer-production.up.railway.app` | Gasless transaction relay |
+## 🏗️ Architecture
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    AI AGENTS / USERS                        │
+│                 (Sign transactions, no ETH)                 │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    PAYMENT ROUTER                           │
+│         Escrow • Memos • Batch Payments • Gasless           │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      NOVIS TOKEN                            │
+│              ERC-20 • Meta-transactions • Permit            │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                         VAULT                               │
+│           Mint/Redeem 1:1 • USDC Backing • Yield            │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    COMPOUND V3                              │
+│                   ~5% APY on USDC                           │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## 🔒 Security
 
-- **Overcollateralized**: Always ≥100% USDC backing
-- **Multi-sig Control**: SAFE wallet controls all protocol functions
-- **Upgradeable**: UUPS proxy pattern allows bug fixes without fund migration
-- **Rescue Functions**: Stuck tokens can always be recovered
-- **Spending Limits**: Smart accounts have daily limits to protect AI agents
-- **Pausable**: Emergency pause available on vault and accounts
-- **Open Source**: All contracts verified on BaseScan
+- **Overcollateralized**: 126%+ USDC backing at all times
+- **Verified Contracts**: All contracts verified on BaseScan
+- **Multi-sig Control**: SAFE wallet (2/3) controls protocol
+- **Auditable**: Open source, transparent on-chain
+- **Upgradeable**: UUPS proxy for bug fixes without fund migration
 
 ---
 
-## 🌐 Network Details
+## 🌐 Links
 
-| Property | Value |
-|----------|-------|
-| Network | Base Mainnet |
-| Chain ID | 8453 |
-| Token Symbol | NVS |
-| Token Decimals | 18 |
-| RPC URL | https://mainnet.base.org |
-
----
-
-## 🔗 Links
-
-- [BaseScan - NOVIS Token](https://basescan.org/address/0x1fb5e1C0c3DEc8da595E531b31C7B30c540E6B85)
-- [BaseScan - Vault](https://basescan.org/address/0xA3D771bF986174D9cf9C85072cCD11cb72A694d4)
-- [Aerodrome DEX](https://aerodrome.finance)
-- [Base Network](https://base.org)
-- [Pimlico (ERC-4337)](https://pimlico.io)
+| Resource | Link |
+|----------|------|
+| **Website** | [novisdefi.com](https://novisdefi.com) |
+| **Twitter** | [@NOVISdefi](https://twitter.com/NOVISdefi) |
+| **DefiLlama** | [NOVIS Protocol](https://defillama.com/protocol/novis) |
+| **BaseScan** | [Token](https://basescan.org/address/0x1fb5e1C0c3DEc8da595E531b31C7B30c540E6B85) |
+| **Aerodrome** | [Swap NOVIS](https://aerodrome.finance/swap?from=0x833589fcd6edb6e08f4c7c32d4f71b54bda02913&to=0x1fb5e1c0c3dec8da595e531b31c7b30c540e6b85) |
 
 ---
 
-## 🛠️ Development
+## 🤝 Integrations
 
-### Prerequisites
+NOVIS is designed for AI agent platforms. If you're building AI agents and need payment infrastructure:
 
-- Node.js 18+ or Python 3.9+
-- A wallet with NOVIS tokens
-- (Optional) Pimlico API key for Smart Accounts
-
-### Local Setup
-
-```bash
-# Clone repository
-git clone https://github.com/your-org/novis.git
-cd novis
-
-# Install dependencies
-npm install
-
-# Set environment
-cp .env.example .env
-# Edit .env with your keys
-
-# Run examples
-node examples/transfer.js
-```
+1. Check out our [Integration Guide](docs/integration.md)
+2. Use our [JavaScript SDK](sdk/javascript/) or [Python SDK](sdk/python/)
+3. Reach out: [@NOVISdefi](https://twitter.com/NOVISdefi)
 
 ---
 
@@ -258,21 +193,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-## 🤝 Contributing
-
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Submit a pull request
-
----
-
-## 📞 Support
-
-- **GitHub Issues**: Bug reports and feature requests
-- **Documentation**: Full guides in `/docs`
-
----
-
-*Built for the AI-powered future* 🤖
+*Built for the AI agent economy* 🤖

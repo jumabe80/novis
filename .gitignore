@@ -1,38 +1,30 @@
-# Environment
-.env
-.env.local
-.env.*.local
-
 # Dependencies
 node_modules/
-__pycache__/
-*.pyc
-.venv/
-venv/
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-.DS_Store
+# Environment files (keep example only)
+.env
+.env.*
+!.env.example
+
+# Foundry
+out/
+cache/
+broadcast/
 
 # Logs
 *.log
-logs/
 
-# Build
-dist/
-build/
-*.egg-info/
+# Temp files
+*.bak
+*.tmp
 
-# Test
-coverage/
-.coverage
-.pytest_cache/
+# OS files
+.DS_Store
+Thumbs.db
 
-# Secrets - NEVER commit these
+# Build artifacts
+flat/
+
+# Sensitive
 *.pem
 *.key
-private_key*
-secret*

@@ -1,0 +1,13 @@
+{
+  "name": "novis-examples",
+  "version": "1.0.0",
+  "description": "NOVIS SDK usage examples",
+  "type": "module",
+  "scripts": {
+    "transfer": "node transfer.js",
+    "escrow": "node escrow.js"
+  },
+  "dependencies": {
+    "ethers": "^6.9.0"
+  }
+}
